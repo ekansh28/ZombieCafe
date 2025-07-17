@@ -1,0 +1,23 @@
+name: Build ZombieCafeBypass.dylib
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build arm64 iOS dylib
+        run: |
+          clang -arch arm64 \
+            -isysroot "$(xcrun --sdk iphoneos --show-sdk-path)" \
+            -framework Foundation \
+            -dynamiclib ZombieCafeBypass.m \
+            -o ZombieCafeBypass.dylib
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ZombieCafeBypass
+          path: ZombieCafeBypass.dylib
